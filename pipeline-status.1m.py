@@ -7,17 +7,19 @@
 # <xbar.author.github>sebk</xbar.author.github>
 # <xbar.desc>Monitor the status of your CodePipeline</xbar.desc>
 # <xbar.dependencies>python 3.10.x, boto3</xbar.dependencies>
-# <xbar.image></xbar.image>
+# <xbar.image>https://raw.githubusercontent.com/sebk/my-xbar-plugins/main/pipeline-status.png</xbar.image>
+# <xbar.abouturl>https://github.com/sebk/my-xbar-plugins/blob/main/README.md</xbar.abouturl>
 
+# <xbar.var>string(VAR_PIPELINE_NAME="Pipeline-Name"): Name of the pipeline</xbar.var>
+
+import os
 import boto3
-
-PIPELINE_NAME = 'MyPipeline'
 
 class Pipeline_status:
 
     def __init__(self) -> None:
         self.cp_client = boto3.client('codepipeline')
-        pipeline_result = self.cp_client.get_pipeline_state(name=PIPELINE_NAME)
+        pipeline_result = self.cp_client.get_pipeline_state(name=os.environ.get('VAR_PIPELINE_NAME'))
         self.pipeline_data = self.get_status(result=pipeline_result)
 
     def get_status(self, result):
@@ -46,21 +48,21 @@ class Pipeline_status:
 
     def get_action_status_symbol(self, action) -> str:
         # Python >= 3.10.x:
-        match action['status']:
-            case 'Succeeded': return ':white_check_mark:'
-            case 'InProgress': return ':hourglass_flowing_sand:'
-            case 'Failed': return ':x:'
-            case _: return ':grey_question:' 
+        # match action['status']:
+        #     case 'Succeeded': return ':white_check_mark:'
+        #     case 'InProgress': return ':hourglass_flowing_sand:'
+        #     case 'Failed': return ':x:'
+        #     case _: return ':grey_question:' 
         # Python 3.9.x:
-        # if action['status'] == 'Succeeded': return ':white_check_mark:'
-        # if action['status'] == 'InProgress': return ':hourglass_flowing_sand:'
-        # if action['status'] == 'Failed': return ':x:'
-        # else: return ':grey_question:' 
+        if action['status'] == 'Succeeded': return ':white_check_mark:'
+        if action['status'] == 'InProgress': return ':hourglass_flowing_sand:'
+        if action['status'] == 'Failed': return ':x:'
+        else: return ':grey_question:' 
         
 
     def display_status(self):
         emoji = self.get_status_symbol(data=self.pipeline_data)
-        status_string = f"{emoji} {PIPELINE_NAME}"
+        status_string = f"{emoji} {os.environ.get('VAR_PIPELINE_NAME')}"
         print(f"{status_string}")
 
     def display_detailed_status(self):
