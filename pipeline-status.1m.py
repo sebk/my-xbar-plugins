@@ -6,12 +6,12 @@
 # <xbar.author>Sebastian Kruschwitz</xbar.author>
 # <xbar.author.github>sebk</xbar.author.github>
 # <xbar.desc>Monitor the status of your CodePipeline</xbar.desc>
-# <xbar.dependencies>python, boto3</xbar.dependencies>
-# <xbar.image>https://i.imgur.com/qiqHX32.png</xbar.image>
+# <xbar.dependencies>python 3.10.x, boto3</xbar.dependencies>
+# <xbar.image></xbar.image>
 
 import boto3
 
-PIPELINE_NAME = 'rxswin-reporting-tool-pipeline'
+PIPELINE_NAME = 'MyPipeline'
 
 class Pipeline_status:
 
@@ -28,7 +28,7 @@ class Pipeline_status:
             for action in stage["actionStates"]:
                 action_status = action["latestExecution"]["status"] if "latestExecution" in action else "unknown"
                 actions.append({'name': action["actionName"], 'status': action_status})
-            status = stage["latestExecution"]["status"]
+            status = stage["latestExecution"]["status"] if "latestExecution" in stage else "unknown"
             stages.append({'name': name, 'status': status, 'actions': actions})
         return stages
 
