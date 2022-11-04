@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/python3
+#!/usr/bin/env PYTHONIOENCODING=UTF-8 /usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 # <xbar.title>CodePipeline Status</xbar.title>
@@ -45,11 +45,17 @@ class Pipeline_status:
         return ':warning:'
 
     def get_action_status_symbol(self, action) -> str:
+        # Python >= 3.10.x:
         match action['status']:
             case 'Succeeded': return ':white_check_mark:'
             case 'InProgress': return ':hourglass_flowing_sand:'
             case 'Failed': return ':x:'
             case _: return ':grey_question:' 
+        # Python 3.9.x:
+        # if action['status'] == 'Succeeded': return ':white_check_mark:'
+        # if action['status'] == 'InProgress': return ':hourglass_flowing_sand:'
+        # if action['status'] == 'Failed': return ':x:'
+        # else: return ':grey_question:' 
         
 
     def display_status(self):
