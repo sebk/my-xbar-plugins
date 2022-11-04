@@ -12,15 +12,18 @@
 
 # <xbar.var>string(VAR_PIPELINE_NAME="Pipeline-Name"): Name of the pipeline</xbar.var>
 
-import os
 import json
+import os
 from enum import Enum
+
 import boto3
+
 
 class Status(Enum):
     IN_PROGRESS = "InProgress"
     FAILED = "Failed"
     SUCCEEDED = "Succeeded"
+
 
 class PipelineStatus:
 
@@ -37,7 +40,8 @@ class PipelineStatus:
         if execution_id in self.execution_data_cache:
             return self.execution_data_cache[execution_id]
 
-        result = self.cp_client.get_pipeline_execution(pipelineName=self.pipeline_name, pipelineExecutionId=execution_id)
+        result = self.cp_client.get_pipeline_execution(pipelineName=self.pipeline_name,
+                                                       pipelineExecutionId=execution_id)
         revisions = result["pipelineExecution"]["artifactRevisions"]
         if len(revisions) > 0:
             message = json.loads(revisions[0]["revisionSummary"])["CommitMessage"]
@@ -58,7 +62,7 @@ class PipelineStatus:
                 action_status = action["latestExecution"]["status"] if "latestExecution" in action else "unknown"
                 actions.append({'name': action["actionName"], 'status': action_status})
             stages.append({'name': stage["stageName"], 'status': status, 'actions': actions, 'message': message})
-        
+
         return stages
 
     def get_symbol(self, status) -> str:
@@ -105,6 +109,7 @@ class PipelineStatus:
             for action in stage["actions"]:
                 action_emoji = self.get_action_status_symbol(action)
                 print(f"-- {action_emoji} {action['name']} ")
+
 
 if __name__ == '__main__':
     try:
