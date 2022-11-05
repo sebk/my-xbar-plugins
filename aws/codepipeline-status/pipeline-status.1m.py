@@ -7,8 +7,8 @@
 # <xbar.author.github>sebk</xbar.author.github>
 # <xbar.desc>Monitor the status of your CodePipeline</xbar.desc>
 # <xbar.dependencies>python,boto3</xbar.dependencies>
-# <xbar.image>https://raw.githubusercontent.com/sebk/my-xbar-plugins/main/pipeline-status.png</xbar.image>
-# <xbar.abouturl>https://github.com/sebk/my-xbar-plugins/blob/main/README.md</xbar.abouturl>
+# <xbar.image>https://raw.githubusercontent.com/sebk/my-xbar-plugins/main/aws/codepipeline-status/pipeline-status.png</xbar.image>
+# <xbar.abouturl>https://github.com/sebk/my-xbar-plugins/blob/main/aws/codepipeline-status/README.md</xbar.abouturl>
 
 # <xbar.var>string(VAR_PIPELINE_NAME="Pipeline-Name"): Name of the pipeline</xbar.var>
 
